@@ -1,0 +1,66 @@
+lui x1, 0x007       # Load upper 20 bits of 0x07000 into x1
+addi x3, x1, 0x020  # x3 = 0x7020 (hex0)
+addi x4, x1, 0x021  # x4 = 0x7021 (hex1)
+addi x5, x1, 0x022  # x5 = 0x7022 (hex2)
+addi x6, x1, 0x023  # x6 = 0x7023 (hex3)
+addi x7, x1, 0x024  # x7 = 0x7024 (hex4)
+
+addi x1, x1, 0x500  # Load upper 20 bits of 0x07800 into x1
+addi x1, x1, 0x300  
+add x2, x1, x0      # x2 = 0x7800 (sw)
+#x9 = 10000
+addi x8, x0, 2000
+add x9, x0, x8
+add x9, x9, x8
+add x9, x9, x8
+add x9, x9, x8
+add x9, x9, x8
+
+
+LOOP: #x10 = sw
+lw x10, 0(x2)
+
+#sub to get the 10000
+add x11 ,x0 ,x0      #x11 will have the value tens of thousands of x10
+DIV10000:
+addi x11, x11, 1
+sub x10, x10, x9
+bge x10, x0 , DIV10000
+addi x11, x11 , -1
+add x10, x10, x9
+
+#sub to get the 1000
+add x12 ,x0 ,x0     #x12 will have the value thousands of x10
+addi x13, x0, 1000  #x13 = 1000
+DIV1000:
+addi x12, x12, 1
+sub x10, x10, x13
+bge x10, x0 , DIV1000
+addi x12, x12 , -1
+add x10, x10, x13
+
+add x14 ,x0 ,x0     #x14 will have the value hundreds of x10
+addi x13, x0, 100   #x13 = 100
+DIV100:
+addi x14, x14, 1
+sub x10, x10, x13
+bge x10, x0 , DIV100
+addi x14, x14 , -1
+add x10, x10, x13
+
+add x15 ,x0 ,x0     #x15 will have the value dozens of x10
+addi x13, x0, 10    #x13 = 10
+DIV10:
+addi x15, x15, 1
+sub x10, x10, x13
+bge x10, x0 , DIV10
+addi x15, x15 , -1
+add x10, x10, x13
+
+sb x11, 0(x7)      #hex4 = tens of thousands of sw
+sb x12, 0(x6)      #hex3 = thousands of sw
+sb x14, 0(x5)      #hex2 = hundreds of sw
+sb x15, 0(x4)      #hex1 = dozens of sw
+sb x10, 0(x3)      #hex0 = digits of sw
+
+j LOOP
