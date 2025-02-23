@@ -5,10 +5,13 @@ The 2-bit branch prediction unit reduces branch misprediction penalties by maint
 
 Key features of the design include:
 
-Five-stage pipelined architecture for efficient instruction execution.
-2-bit branch predictor for reduced misprediction penalties.
-Forwarding and hazard detection to minimize stalls.
-Fully synthesizable SystemVerilog implementation.
+- Five-stage pipelined architecture for efficient instruction execution.
+
+- 2-bit branch predictor for reduced misprediction penalties.
+
+- Forwarding and hazard detection to minimize stalls.
+
+- Fully synthesizable SystemVerilog implementation.
 
 This project aims to demonstrate the effectiveness of branch prediction in pipelined processors and provide an optimized hardware design for performance-critical applications.
 
